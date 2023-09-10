@@ -4,6 +4,7 @@ using EShop.Application.ViewModels;
 using EShop.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Net;
 
 namespace EShop.API.Controllers
@@ -76,11 +77,46 @@ namespace EShop.API.Controllers
             }
         }
 
+        [HttpPost("update")]
+        public async Task<IActionResult> Update([FromBody] UpdateProductViewModel wm)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
 
-        //[HttpGet]
-        //public IActionResult GetProducts()
-        //{
-        //    return Ok();
-        //}
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Remove([FromBody] string Id)
+        {
+            try
+            {
+                await productWriteRepository.RemoveAsync(Id);
+                await productWriteRepository.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetProducts()
+        {
+
+
+            return Ok();
+        }
     }
 }
